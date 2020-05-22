@@ -5,6 +5,9 @@ from django.urls import reverse
 from .models import Post, Group
 
 
+USER = get_user_model()(username='new_user')
+
+
 def get_post_context(post, context):
     for value in context['page']:
         if post.id == value.id:
@@ -14,7 +17,7 @@ def get_post_context(post, context):
 
 class test_profile_after_registration(TestCase):
     def setUp(self):
-        self.user = get_user_model()(username='new_user')
+        self.user = USER
         self.user.save()
         self.client.force_login(self.user)
 
@@ -27,7 +30,7 @@ class test_profile_after_registration(TestCase):
 
 class test_authorized_user_new_post(TestCase):
     def setUp(self):
-        self.user = get_user_model()(username='new_user')
+        self.user = USER
         self.user.save()
         self.client.force_login(self.user)
 
@@ -49,7 +52,7 @@ class test_authorized_user_new_post(TestCase):
 
 class test_not_authorized_user_new_post(TestCase):
     def setUp(self):
-        self.user = get_user_model()(username='new_user')
+        self.user = USER
         self.user.save()
 
     def test_get_new_post(self):
@@ -62,7 +65,7 @@ class test_not_authorized_user_new_post(TestCase):
 
 class test_post_view(TestCase):
     def setUp(self):
-        self.user = get_user_model()(username='new_user')
+        self.user = USER
         self.user.save()
         self.client.force_login(self.user)
 
@@ -103,7 +106,7 @@ class test_post_view(TestCase):
 
 class test_post_edit(TestCase):
     def setUp(self):
-        self.user = get_user_model()(username='new_user')
+        self.user = USER
         self.user.save()
         self.client.force_login(self.user)
 

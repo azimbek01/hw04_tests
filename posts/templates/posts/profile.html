@@ -2,69 +2,69 @@
 {% block title %}Профиль пользователя{% endblock %}
 {% block content %}
 
-<main role='main' class='container'>
-    <div class='row'>
-        <div class='col-md-3 mb-3 mt-1'>
-            <div class='card'>
-                <div class='card-body'>
-                    <div class='h2'>
-                        {{ username.get_full_name }}
+    <main role='main' class='container'>
+        <div class='row'>
+            <div class='col-md-3 mb-3 mt-1'>
+                <div class='card'>
+                    <div class='card-body'>
+                        <div class='h2'>
+                            {{ username.get_full_name }}
+                        </div>
+                        <div class='h3 text-muted'>
+                            @{{ username.username }}
+                        </div>
                     </div>
-                    <div class='h3 text-muted'>
-                        @{{ username.username }}
-                    </div>
+                    <ul class='list-group list-group-flush'>
+                    <li class='list-group-item'>
+                        <div class='h6 text-muted'>
+                            Подписчиков: XXX <br />
+                            Подписан: XXX
+                        </div>
+                    </li>
+                    <li class='list-group-item'>
+                        <div class='h6 text-muted'>
+                            Записей: {{ count }}
+                        </div>
+                    </li>
+                    </ul>
                 </div>
-                <ul class='list-group list-group-flush'>
-                <li class='list-group-item'>
-                    <div class='h6 text-muted'>
-                        Подписчиков: XXX <br />
-                        Подписан: XXX
+            </div>
+
+            <div class='col-md-9'>
+                    
+                {% for post in page %}
+                    <div class='card mb-3 mt-1 shadow-sm'>
+                        <div class='card-body'>
+                            
+                            <p class='card-text'>
+                                <a href=/{{ username }}><strong class='d-block text-gray-dark'>
+                                @{{ username.username }}</strong></a>
+                                <p>{{ post.text|linebreaksbr }}</p>
+                            </p>
+                            <div class='d-flex justify-content-between align-items-center'>
+                                <div class='btn-group '>
+                                    <a class='btn btn-sm text-muted' href=/{{ username }}/{{ post.id }} 
+                                    role='button'>Добавить комментарий</a>
+
+                                    {% if user == username %}
+                                        <a class='btn btn-sm text-muted' href=/{{ username }}/{{ post.id }} 
+                                        role='button'>Редактировать</a>
+                                    {% endif %}
+
+                                </div>
+                                <small class='text-muted'>{{ post.pub_date }}</small>
+                            </div>
+                            
+                        </div>
                     </div>
-                </li>
-                <li class='list-group-item'>
-                    <div class='h6 text-muted'>
-                        Записей: {{ count }}
-                    </div>
-                </li>
-                </ul>
+                {% endfor %}
+
+            {% if page.has_other_pages %}
+                {% include 'paginator.html' with items=page paginator=paginator%}
+            {% endif %}
+
             </div>
         </div>
-
-        <div class='col-md-9'>
-                   
-            {% for post in page %}
-                <div class='card mb-3 mt-1 shadow-sm'>
-                    <div class='card-body'>
-                        
-                        <p class='card-text'>
-                            <a href=/{{ username }}><strong class='d-block text-gray-dark'>
-                            @{{ username.username }}</strong></a>
-                            <p>{{ post.text|linebreaksbr }}</p>
-                        </p>
-                        <div class='d-flex justify-content-between align-items-center'>
-                            <div class='btn-group '>
-                                <a class='btn btn-sm text-muted' href=/{{ username }}/{{ post.id }} 
-                                role='button'>Добавить комментарий</a>
-
-                                {% if user == username %}
-                                    <a class='btn btn-sm text-muted' href=/{{ username }}/{{ post.id }} 
-                                    role='button'>Редактировать</a>
-                                {% endif %}
-
-                            </div>
-                            <small class='text-muted'>{{ post.pub_date }}</small>
-                        </div>
-                        
-                    </div>
-                </div>
-            {% endfor %}
-
-        {% if page.has_other_pages %}
-            {% include 'paginator.html' with items=page paginator=paginator%}
-        {% endif %}
-
-        </div>
-    </div>
-</main>
+    </main>
 
 {% endblock content %}
